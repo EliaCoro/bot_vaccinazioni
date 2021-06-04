@@ -1,0 +1,14 @@
+{
+  "name": "bot_vaccinazioni",
+  "version": "1.0.0",
+  "description": "bot per la prenotazione del vaccino",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "EL",
+  "license": "ISC",
+  "dependencies": {
+    "del": "^6.0.0"
+  }
+}
