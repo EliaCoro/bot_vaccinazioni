@@ -89,7 +89,7 @@ const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
                                 hrefElement = await page.$("td.highlight");
                                 attr = await page.evaluate(el => el.getAttribute("data-date"), hrefElement);
                             }
-                            if ((new Date(attr[0])).getTime() >= user.maxDate.getTime()) {
+                            if ((new Date(attr[0])).getTime() <= user.maxDate.getTime()) {
                                 await hrefElement.click();
                                 await page.waitForTimeout(500)
                                 console.log("[3] - Giorno selezionato");
