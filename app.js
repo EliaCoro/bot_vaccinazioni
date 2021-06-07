@@ -100,10 +100,6 @@ const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
                                 await page.type('input[name="nome"]', user.name);
                                 await page.type('input[name="email"]', user.email);
                                 await page.type('input[name="cellulare"]', user.phone);
-                                await page.screenshot({
-                                    fullPage: true,
-                                    path: 'resume/' + user.name + user.surname + '_resume.png'
-                                })
                                 await page.click('#bottoneconferma');
                                 await page.waitForTimeout(500)
                                     await page.screenshot({
