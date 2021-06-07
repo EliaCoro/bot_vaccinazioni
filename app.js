@@ -34,7 +34,7 @@ const user = {
         true, //Venezia - Pala Expo
         true //Venezia - Rampa santa chiara
     ],
-    maxDate: new Date("2020/07/30")
+    maxDate: new Date("2020/06/30")
 };
 
 const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
@@ -55,13 +55,14 @@ const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
             // PRIMA PAGINA
             await page.type('#cod_fiscale', user.fiscalCode);
             await page.type('#num_tessera', user.idFiscalCode);
-            await page.click('input[type="checkbox"]');
+            //await page.click('input[type="checkbox"]:nth-child(1)');
+            let button = await page.$$('input[type="checkbox"]');
+            await button[1].click();
             await page.click('.btn-primary');
-            console.log("[1] - Dati inseriti correttamente");
-            
-            await page.waitForTimeout(800)
+            console.log("[1] - Dati inseriti correttamente")
+            await page.waitForTimeout(800);
             await page.click('button[onclick="scegliserv(178)"]');
-            await page.waitForTimeout(800)
+            await page.waitForTimeout(800);
             for (let i = 0; i < 11; i++) {
                 if (user.places[i]) {
                     isAvailable = (await page.$('button.btn.btn-primary.btn-full:nth-child(' + (i + 3) + ')[disabled]')) == null;
@@ -122,7 +123,7 @@ const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
                 fullPage: true,
                 path: 'error/' + 'error.png'
             })
-            throw (error);
+            //throw (error);
         }
         //await page.waitForTimeout(800)
         await page.close();
