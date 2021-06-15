@@ -22,21 +22,20 @@ const user = {
     idFiscalCode: "",
     phone: "",
     places: [
-        true, //La cittadella
-        true, //Chioggia
-        true, //Dolo ospedale
-        true, //Dolo palazzetto dello sport
-        true, //Lido di venezia
+        false, //La cittadella
+        false, //Chioggia
+        false, //Dolo ospedale
+        false, //Dolo palazzetto dello sport
+        false, //Lido di venezia
         true, //Mira
         true, //Mirano bocciodromo
-        true, //MIrano bocciodromo aggiuntivo
-        true, //Venezia - ospedale SS Giovanni
+        true, //Mirano bocciodromo aggiuntivo
+        false, //Venezia - ospedale SS Giovanni
         true, //Venezia - Pala Expo
-        true //Venezia - Rampa santa chiara
+        false //Venezia - Rampa santa chiara
     ],
-    maxDate: new Date("2020/06/30")
+    maxDate: new Date("2021/06/27")
 };
-
 const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
 
 (async () => {
@@ -59,17 +58,22 @@ const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
             let button = await page.$$('input[type="checkbox"]');
             await button[1].click();
             await page.click('.btn-primary');
-            console.log("[1] - Dati inseriti correttamente")
             await page.waitForTimeout(800);
             await page.click('button[onclick="scegliserv(178)"]');
+            console.log("[1] - Dati inseriti correttamente")
+            
             await page.waitForTimeout(800);
+            await page.screenshot({
+                fullPage: true,
+                path: '' + user.name + user.surname + 'test.png'
+            })
             for (let i = 0; i < 11; i++) {
                 if (user.places[i]) {
                     isAvailable = (await page.$('button.btn.btn-primary.btn-full:nth-child(' + (i + 3) + ')[disabled]')) == null;
                     if (isAvailable) {
                         await page.click('.btn-full:nth-child(' + (i + 3) + ')');
                         console.log("[2] - Trovata una prenotazione libera a " + namePlaces[i]);
-                        await page.waitForTimeout(500)
+                        await page.waitForTimeout(800)
                         try {
                             // Prende tutte le date disponibili
                             let dates = await page.$$('td.highlight');
@@ -90,7 +94,8 @@ const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
                                 hrefElement = await page.$("td.highlight");
                                 attr = await page.evaluate(el => el.getAttribute("data-date"), hrefElement);
                             }
-                            if ((new Date(attr[0])).getTime() <= user.maxDate.getTime()) {
+                            console.log((new Date(attr))) 
+                            if ((new Date(attr)).getTime() <= user.maxDate.getTime()) {
                                 await hrefElement.click();
                                 await page.waitForTimeout(500)
                                 console.log("[3] - Giorno selezionato");
@@ -100,11 +105,15 @@ const ulssLink = "https://vaccinicovid.regione.veneto.it/ulss3";
                                 await page.type('input[name="nome"]', user.name);
                                 await page.type('input[name="email"]', user.email);
                                 await page.type('input[name="cellulare"]', user.phone);
+                                await page.screenshot({
+                                    fullPage: true,
+                                    path: 'resume/' + user.name + user.surname + '_1resume.png'
+                                })
                                 await page.click('#bottoneconferma');
-                                await page.waitForTimeout(500)
+                                await page.waitForTimeout(800)
                                     await page.screenshot({
                                         fullPage: true,
-                                        path: 'resume/' + user.name + user.surname + '_resume.png'
+                                        path: 'resume/' + user.name + user.surname + '_2resume.png'
                                     })
                                 reservation = false;
                             }
